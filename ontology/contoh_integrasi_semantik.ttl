@@ -1,0 +1,123 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Prefix Namespace Ontologi
+@prefix mhs: <http://example.org/ontology/mahasiswa#> .
+@prefix silam: <http://example.org/ontology/administrasi#> .
+
+# Prefix Resource Individuals
+@prefix res_mhs: <http://example.org/resource/mahasiswa/> .
+@prefix res_prodi: <http://example.org/resource/prodi/> .
+@prefix res_layanan: <http://example.org/resource/layanan/> .
+@prefix res_pengajuan: <http://example.org/resource/pengajuan/> .
+@prefix res_dokumen: <http://example.org/resource/dokumen/> .
+@prefix res_status: <http://example.org/resource/status/> .
+
+# ==============================================================================
+# DATA INDIVIDUAL DARI SISTEM A (PANGKALAN DATA MAHASISWA)
+# ==============================================================================
+
+res_prodi:informatika
+    a mhs:ProgramStudi ;
+    rdfs:label "Informatika" .
+
+res_prodi:sistem_informasi
+    a mhs:ProgramStudi ;
+    rdfs:label "Sistem Informasi" .
+
+# Mahasiswa 1
+res_mhs:22081010001
+    a mhs:Mahasiswa ;
+    mhs:npm "22081010001"^^xsd:string ;
+    mhs:namaMahasiswa "Fajar Pratama"^^xsd:string ;
+    mhs:programStudi "Informatika"^^xsd:string ;
+    mhs:angkatan "2022"^^xsd:gYear ;
+    mhs:terdaftarPada res_prodi:informatika ;
+    rdfs:label "Fajar Pratama" .
+
+# Mahasiswa 2
+res_mhs:22081010002
+    a mhs:Mahasiswa ;
+    mhs:npm "22081010002"^^xsd:string ;
+    mhs:namaMahasiswa "Nabila Putri Cahyani"^^xsd:string ;
+    mhs:programStudi "Sistem Informasi"^^xsd:string ;
+    mhs:angkatan "2022"^^xsd:gYear ;
+    mhs:terdaftarPada res_prodi:sistem_informasi ;
+    rdfs:label "Nabila Putri Cahyani" .
+
+# ==============================================================================
+# DATA INDIVIDUAL DARI SISTEM B (SILAM - LAYANAN ADMINISTRASI)
+# ==============================================================================
+
+# Katalog Layanan Administrasi
+res_layanan:sk_aktif
+    a silam:LayananAdministrasi ;
+    silam:kodeLayanan "SK-AKTIF"^^xsd:string ;
+    silam:namaLayanan "Surat Keterangan Aktif Kuliah"^^xsd:string ;
+    rdfs:label "Surat Keterangan Aktif Kuliah" .
+
+res_layanan:sr_beasiswa
+    a silam:LayananAdministrasi ;
+    silam:kodeLayanan "SR-BEASISWA"^^xsd:string ;
+    silam:namaLayanan "Surat Rekomendasi Beasiswa"^^xsd:string ;
+    rdfs:label "Surat Rekomendasi Beasiswa" .
+
+# Status Pengajuan
+res_status:selesai
+    a silam:StatusPengajuan ;
+    rdfs:label "Selesai" .
+
+res_status:perlu_perbaikan
+    a silam:StatusPengajuan ;
+    rdfs:label "Perlu Perbaikan" .
+
+res_status:menunggu
+    a silam:StatusPengajuan ;
+    rdfs:label "Menunggu Verifikasi" .
+
+# ==============================================================================
+# INTEGRASI SEMANTIK (LINKED DATA GRAPH)
+# Membuktikan relasi antarsistem:
+# - Mahasiswa (Sistem A) mengajukan PengajuanSurat (Sistem B)
+# - PengajuanSurat berkaitan dengan LayananAdministrasi
+# - PengajuanSurat memiliki StatusPengajuan
+# - PengajuanSurat melampirkan DokumenPersyaratan
+# ==============================================================================
+
+# Dokumen Persyaratan untuk Tiket SILAM-202610-0001
+res_dokumen:1
+    a silam:DokumenPersyaratan ;
+    silam:namaDokumen "KTM_Fajar_Pratama.pdf"^^xsd:string ;
+    silam:statusVerifikasi "Valid"^^xsd:string ;
+    silam:ukuranKb 512 .
+
+res_dokumen:2
+    a silam:DokumenPersyaratan ;
+    silam:namaDokumen "KRS_Semester5_Fajar.pdf"^^xsd:string ;
+    silam:statusVerifikasi "Valid"^^xsd:string ;
+    silam:ukuranKb 420 .
+
+# Pengajuan 1: Selesai
+res_pengajuan:SILAM-202610-0001
+    a silam:PengajuanSurat ;
+    silam:nomorTiket "SILAM-202610-0001"^^xsd:string ;
+    silam:diajukanOleh res_mhs:22081010001 ;
+    silam:untukLayanan res_layanan:sk_aktif ;
+    silam:memilikiStatus res_status:selesai ;
+    silam:tanggalPengajuan "2026-10-17T09:30:00+07:00"^^xsd:dateTime ;
+    silam:keperluan "Pengurusan perpanjangan tunjangan keluarga (PNS) di Taspen Kantor Wilayah."^^xsd:string ;
+    silam:catatanPetugas "Berkas lengkap dan telah diverifikasi. Surat keterangan aktif kuliah telah ditandatangani secara digital."^^xsd:string ;
+    silam:melampirkanDokumen res_dokumen:1 , res_dokumen:2 .
+
+# Pengajuan 2: Perlu Perbaikan
+res_pengajuan:SILAM-202610-0002
+    a silam:PengajuanSurat ;
+    silam:nomorTiket "SILAM-202610-0002"^^xsd:string ;
+    silam:diajukanOleh res_mhs:22081010001 ;
+    silam:untukLayanan res_layanan:sr_beasiswa ;
+    silam:memilikiStatus res_status:perlu_perbaikan ;
+    silam:tanggalPengajuan "2026-10-18T14:15:00+07:00"^^xsd:dateTime ;
+    silam:keperluan "Pendaftaran Beasiswa Prestasi Unggulan Kementerian Pendidikan 2026."^^xsd:string ;
+    silam:catatanPetugas "Transkrip nilai yang diunggah belum memuat stempel/tanda tangan legalisir Kaprodi."^^xsd:string .

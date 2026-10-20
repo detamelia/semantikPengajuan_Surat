@@ -1,0 +1,154 @@
+@prefix : <http://example.org/ontology/administrasi#> .
+@prefix silam: <http://example.org/ontology/administrasi#> .
+@prefix mhs: <http://example.org/ontology/mahasiswa#> .
+@prefix res_silam: <http://example.org/resource/pengajuan/> .
+@prefix res_layanan: <http://example.org/resource/layanan/> .
+@prefix res_mhs: <http://example.org/resource/mahasiswa/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ==============================================================================
+# ONTOLOGI LAYANAN ADMINISTRASI MAHASISWA - SILAM (SISTEM B)
+# Proyek UTS Semantic Web Terintegrasi
+# ==============================================================================
+
+<http://example.org/ontology/administrasi>
+    a owl:Ontology ;
+    rdfs:label "Ontologi Sistem Layanan Administrasi Mahasiswa (SILAM)" ;
+    rdfs:comment "Ontologi untuk memodelkan proses bisnis pengajuan surat akademik dan diintegrasikan dengan ontologi mahasiswa dari Sistem A." ;
+    owl:versionInfo "1.0.0" .
+
+# ==============================================================================
+# DEFINISI KELAS (CLASSES)
+# ==============================================================================
+
+# Kelas Eksternal dari Sistem A
+mhs:Mahasiswa
+    a owl:Class ;
+    rdfs:label "Mahasiswa" ;
+    rdfs:comment "Entitas mahasiswa aktif dari Sistem A." .
+
+mhs:ProgramStudi
+    a owl:Class ;
+    rdfs:label "Program Studi" ;
+    rdfs:comment "Program studi akademik dari Sistem A." .
+
+# Kelas Asli Sistem B (SILAM)
+silam:LayananAdministrasi
+    a owl:Class ;
+    rdfs:label "Layanan Administrasi" ;
+    rdfs:comment "Jenis layanan administrasi akademik (misal: Surat Aktif Kuliah, Surat Rekomendasi, SKL)." .
+
+silam:PengajuanSurat
+    a owl:Class ;
+    rdfs:label "Pengajuan Surat" ;
+    rdfs:comment "Entitas transaksi pengajuan surat oleh mahasiswa." .
+
+silam:DokumenPersyaratan
+    a owl:Class ;
+    rdfs:label "Dokumen Persyaratan" ;
+    rdfs:comment "Berkas digital pendukung yang dilampirkan mahasiswa." .
+
+silam:StatusPengajuan
+    a owl:Class ;
+    rdfs:label "Status Pengajuan" ;
+    rdfs:comment "Status proses pengajuan surat (Menunggu Verifikasi, Diproses, Perlu Perbaikan, Disetujui, Selesai)." .
+
+# ==============================================================================
+# OBJECT PROPERTIES (RELASI ANTAR-ENTITAS)
+# ==============================================================================
+
+silam:diajukanOleh
+    a owl:ObjectProperty ;
+    rdfs:domain silam:PengajuanSurat ;
+    rdfs:range mhs:Mahasiswa ;
+    rdfs:label "diajukan oleh" ;
+    rdfs:comment "Relasi semantik utama: Pengajuan surat diajukan oleh Mahasiswa." .
+
+silam:mengajukan
+    a owl:ObjectProperty ;
+    owl:inverseOf silam:diajukanOleh ;
+    rdfs:domain mhs:Mahasiswa ;
+    rdfs:range silam:PengajuanSurat ;
+    rdfs:label "mengajukan" .
+
+silam:untukLayanan
+    a owl:ObjectProperty ;
+    rdfs:domain silam:PengajuanSurat ;
+    rdfs:range silam:LayananAdministrasi ;
+    rdfs:label "untuk layanan" ;
+    rdfs:comment "Pengajuan surat berkaitan dengan Layanan Administrasi." .
+
+silam:memilikiStatus
+    a owl:ObjectProperty ;
+    rdfs:domain silam:PengajuanSurat ;
+    rdfs:range silam:StatusPengajuan ;
+    rdfs:label "memiliki status" ;
+    rdfs:comment "Pengajuan surat berada dalam tahapan status tertentu." .
+
+silam:melampirkanDokumen
+    a owl:ObjectProperty ;
+    rdfs:domain silam:PengajuanSurat ;
+    rdfs:range silam:DokumenPersyaratan ;
+    rdfs:label "melampirkan dokumen" ;
+    rdfs:comment "Pengajuan surat melampirkan berkas dokumen persyaratan." .
+
+mhs:terdaftarPada
+    a owl:ObjectProperty ;
+    rdfs:domain mhs:Mahasiswa ;
+    rdfs:range mhs:ProgramStudi ;
+    rdfs:label "terdaftar pada" .
+
+# ==============================================================================
+# DATATYPE PROPERTIES (ATRIBUT LITERAL)
+# ==============================================================================
+
+silam:nomorTiket
+    a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:domain silam:PengajuanSurat ;
+    rdfs:range xsd:string ;
+    rdfs:label "Nomor Tiket" .
+
+silam:tanggalPengajuan
+    a owl:DatatypeProperty ;
+    rdfs:domain silam:PengajuanSurat ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "Tanggal Pengajuan" .
+
+silam:keperluan
+    a owl:DatatypeProperty ;
+    rdfs:domain silam:PengajuanSurat ;
+    rdfs:range xsd:string ;
+    rdfs:label "Keperluan Pengajuan" .
+
+silam:catatanPetugas
+    a owl:DatatypeProperty ;
+    rdfs:domain silam:PengajuanSurat ;
+    rdfs:range xsd:string ;
+    rdfs:label "Catatan Petugas" .
+
+silam:kodeLayanan
+    a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:domain silam:LayananAdministrasi ;
+    rdfs:range xsd:string ;
+    rdfs:label "Kode Layanan" .
+
+silam:namaLayanan
+    a owl:DatatypeProperty ;
+    rdfs:domain silam:LayananAdministrasi ;
+    rdfs:range xsd:string ;
+    rdfs:label "Nama Layanan" .
+
+silam:namaDokumen
+    a owl:DatatypeProperty ;
+    rdfs:domain silam:DokumenPersyaratan ;
+    rdfs:range xsd:string ;
+    rdfs:label "Nama Dokumen" .
+
+silam:statusVerifikasi
+    a owl:DatatypeProperty ;
+    rdfs:domain silam:DokumenPersyaratan ;
+    rdfs:range xsd:string ;
+    rdfs:label "Status Verifikasi" .

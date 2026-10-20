@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://example.org/ontology/administrasi#"
+     xml:base="http://example.org/ontology/administrasi"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:mhs="http://example.org/ontology/mahasiswa#"
+     xmlns:silam="http://example.org/ontology/administrasi#">
+
+    <owl:Ontology rdf:about="http://example.org/ontology/administrasi">
+        <rdfs:label>Ontologi Sistem Layanan Administrasi Mahasiswa (SILAM)</rdfs:label>
+        <rdfs:comment>Ontologi Sistem B yang terintegrasi secara semantik dengan Sistem A (Pangkalan Data Mahasiswa) untuk pemodelan layanan surat akademik.</rdfs:comment>
+        <owl:versionInfo>1.0.0</owl:versionInfo>
+    </owl:Ontology>
+
+    <!-- ================================================================= -->
+    <!-- KELAS DARI SISTEM A (REFERENSI SEMANTIK)                           -->
+    <!-- ================================================================= -->
+
+    <owl:Class rdf:about="http://example.org/ontology/mahasiswa#Mahasiswa">
+        <rdfs:label>Mahasiswa</rdfs:label>
+        <rdfs:comment>Entitas mahasiswa master yang dikelola oleh Sistem A.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.org/ontology/mahasiswa#ProgramStudi">
+        <rdfs:label>Program Studi</rdfs:label>
+        <rdfs:comment>Program studi tempat mahasiswa terdaftar (Sistem A).</rdfs:comment>
+    </owl:Class>
+
+    <!-- ================================================================= -->
+    <!-- KELAS SISTEM B (SILAM)                                            -->
+    <!-- ================================================================= -->
+
+    <owl:Class rdf:about="http://example.org/ontology/administrasi#LayananAdministrasi">
+        <rdfs:label>Layanan Administrasi</rdfs:label>
+        <rdfs:comment>Katalog jenis surat dan layanan akademik yang disediakan universitas.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.org/ontology/administrasi#PengajuanSurat">
+        <rdfs:label>Pengajuan Surat</rdfs:label>
+        <rdfs:comment>Permohonan penerbitan surat akademik yang diajukan oleh mahasiswa.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.org/ontology/administrasi#DokumenPersyaratan">
+        <rdfs:label>Dokumen Persyaratan</rdfs:label>
+        <rdfs:comment>Berkas digital pendukung yang dilampirkan oleh mahasiswa untuk memverifikasi permohonan surat.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://example.org/ontology/administrasi#StatusPengajuan">
+        <rdfs:label>Status Pengajuan</rdfs:label>
+        <rdfs:comment>Status tahapan verifikasi pengajuan surat (Menunggu Verifikasi, Diproses, Perlu Perbaikan, Disetujui, Selesai).</rdfs:comment>
+    </owl:Class>
+
+    <!-- ================================================================= -->
+    <!-- OBJECT PROPERTIES (HUBUNGAN ANTAR-ENTITAS)                         -->
+    <!-- ================================================================= -->
+
+    <!-- Mahasiswa mengajukan PengajuanSurat (inverse: diajukanOleh) -->
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/administrasi#diajukanOleh">
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#PengajuanSurat"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/mahasiswa#Mahasiswa"/>
+        <rdfs:label>diajukan oleh</rdfs:label>
+        <rdfs:comment>Menghubungkan pengajuan surat di Sistem B dengan individu mahasiswa di Sistem A.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/administrasi#mengajukan">
+        <owl:inverseOf rdf:resource="http://example.org/ontology/administrasi#diajukanOleh"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/mahasiswa#Mahasiswa"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/administrasi#PengajuanSurat"/>
+        <rdfs:label>mengajukan</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- PengajuanSurat berkaitan dengan LayananAdministrasi -->
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/administrasi#untukLayanan">
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#PengajuanSurat"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/administrasi#LayananAdministrasi"/>
+        <rdfs:label>untuk layanan</rdfs:label>
+        <rdfs:comment>Menghubungkan pengajuan surat dengan jenis layanan administrasi tertentu.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- PengajuanSurat memiliki StatusPengajuan -->
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/administrasi#memilikiStatus">
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#PengajuanSurat"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/administrasi#StatusPengajuan"/>
+        <rdfs:label>memiliki status</rdfs:label>
+        <rdfs:comment>Status pemrosesan pengajuan saat ini.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- PengajuanSurat melampirkan DokumenPersyaratan -->
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/administrasi#melampirkanDokumen">
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#PengajuanSurat"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/administrasi#DokumenPersyaratan"/>
+        <rdfs:label>melampirkan dokumen</rdfs:label>
+        <rdfs:comment>Dokumen digital pendukung yang dilampirkan pada berkas pengajuan surat.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Mahasiswa terdaftar pada ProgramStudi (dari Sistem A) -->
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/mahasiswa#terdaftarPada">
+        <rdfs:domain rdf:resource="http://example.org/ontology/mahasiswa#Mahasiswa"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/mahasiswa#ProgramStudi"/>
+        <rdfs:label>terdaftar pada</rdfs:label>
+        <rdfs:comment>Relasi akademik antara mahasiswa dan program studi asal.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- ================================================================= -->
+    <!-- DATATYPE PROPERTIES (LITERAL DATA)                                -->
+    <!-- ================================================================= -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/administrasi#nomorTiket">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#PengajuanSurat"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>Nomor Tiket Pengajuan</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/administrasi#tanggalPengajuan">
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#PengajuanSurat"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>Tanggal Pengajuan</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/administrasi#keperluan">
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#PengajuanSurat"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>Rincian Keperluan</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/administrasi#catatanPetugas">
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#PengajuanSurat"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>Catatan Petugas</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/administrasi#kodeLayanan">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#LayananAdministrasi"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>Kode Layanan</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/administrasi#namaLayanan">
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#LayananAdministrasi"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>Nama Layanan</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/administrasi#namaDokumen">
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#DokumenPersyaratan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>Nama Dokumen</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/administrasi#statusVerifikasi">
+        <rdfs:domain rdf:resource="http://example.org/ontology/administrasi#DokumenPersyaratan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>Status Verifikasi Dokumen</rdfs:label>
+    </owl:DatatypeProperty>
+
+</rdf:RDF>
