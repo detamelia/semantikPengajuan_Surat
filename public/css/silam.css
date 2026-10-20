@@ -2831,4 +2831,375 @@ body {
     margin-top: 0.1rem;
 }
 
+:root {
+    /* Variabel yang dipakai view admin */
+    --primary-50: #eef2ff;
+    --primary-100: #e0e7ff;
+    --primary-600: #1e20a8;
+    --primary-700: #171994;
 
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+
+    --emerald-50: #ecfdf5;
+    --emerald-600: #059669;
+    --emerald-700: #047857;
+
+    --rose-50: #fff1f2;
+    --rose-600: #e11d48;
+    --rose-700: #be123c;
+
+    --blue-50: #eff6ff;
+    --blue-600: #2563eb;
+    --blue-700: #1d4ed8;
+
+    --amber-50: #fffbeb;
+    --amber-600: #d97706;
+    --amber-700: #b45309;
+
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+}
+
+code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+}
+
+/* ---------- Container ---------- */
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* content-body sudah punya padding, jadi padding inline container dinolkan */
+.content-body > .container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* ---------- Grid ---------- */
+.grid {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+@media (max-width: 1200px) {
+    .grid-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1100px) {
+    .grid-cols-2,
+    .grid-cols-3 { grid-template-columns: minmax(0, 1fr); }
+    .grid-cols-3 > [style*="span 2"] { grid-column: auto !important; }
+}
+
+@media (max-width: 560px) {
+    .grid-cols-4 { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- Card ---------- */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1.15rem 1.5rem;
+    border-bottom: 1px solid var(--slate-100);
+}
+
+.card-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--slate-100);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    font-family: inherit;
+    font-size: 0.885rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-sm {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+    border-radius: 10px;
+}
+
+.btn-primary {
+    background: var(--brand-blue);
+    color: #ffffff;
+}
+.btn-primary:hover { background: var(--brand-blue-hover); }
+
+.btn-outline,
+.btn-secondary {
+    background: #ffffff;
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+.btn-outline:hover,
+.btn-secondary:hover {
+    background: var(--body-bg);
+    border-color: var(--slate-300);
+}
+
+.btn-danger {
+    background: #ffffff;
+    color: var(--rose-600);
+    border-color: #fecdd3;
+}
+.btn-danger:hover {
+    background: var(--rose-50);
+    border-color: #fda4af;
+}
+
+.btn-success {
+    background: var(--emerald-600);
+    color: #ffffff;
+}
+.btn-success:hover { background: var(--emerald-700); }
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn:focus-visible,
+.form-control:focus-visible {
+    outline: 2px solid var(--brand-blue);
+    outline-offset: 2px;
+}
+
+/* ---------- Badges ---------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+    background: var(--slate-100);
+    color: var(--slate-600);
+}
+
+.badge-indigo { background: var(--primary-50); color: var(--primary-600); }
+.badge-blue { background: var(--blue-50); color: var(--blue-600); }
+.badge-emerald, .badge-green { background: var(--emerald-50); color: var(--emerald-600); }
+.badge-rose, .badge-red { background: var(--rose-50); color: var(--rose-600); }
+.badge-amber, .badge-yellow, .badge-warning { background: var(--amber-50); color: var(--amber-600); }
+.badge-slate, .badge-gray { background: var(--slate-100); color: var(--slate-600); }
+
+/* ---------- Kartu statistik ---------- */
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: var(--shadow-card);
+}
+
+.stat-info span {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.stat-info h3 {
+    margin-top: 0.2rem;
+    font-size: 1.85rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+/* ---------- Tabel ---------- */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.875rem;
+}
+
+.table th {
+    padding: 0.85rem 1.25rem;
+    background: var(--slate-50);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-align: left;
+    text-transform: uppercase;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+.table td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--slate-100);
+    vertical-align: middle;
+    color: var(--text-secondary);
+}
+
+.table tbody tr:hover { background: var(--slate-50); }
+.table tbody tr:last-child td { border-bottom: none; }
+
+/* tabel di dalam dua kolom (dashboard) dibuat lebih rapat */
+.grid-cols-2 .table th,
+.grid-cols-2 .table td {
+    padding: 0.85rem 1rem;
+}
+
+/* ---------- Form ---------- */
+.form-group { margin-bottom: 1.1rem; }
+
+.form-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--slate-700);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--slate-300);
+    border-radius: 10px;
+    background: #ffffff;
+    font-family: inherit;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--brand-blue);
+    box-shadow: 0 0 0 3px rgba(30, 32, 168, 0.1);
+}
+
+.form-control::placeholder { color: var(--text-light); }
+
+textarea.form-control {
+    min-height: 100px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+/* ---------- Spinner (tombol Uji Koneksi API) ---------- */
+.spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--slate-300);
+    border-top-color: var(--brand-blue);
+    border-radius: 50%;
+    animation: silam-spin 0.7s linear infinite;
+}
+
+@keyframes silam-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .spinner { animation-duration: 2s; }
+}
+
+/* ---------- Pagination (Paginator::useBootstrapFive) ---------- */
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    justify-content: flex-end;
+}
+
+.pagination .page-link {
+    display: block;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--slate-700);
+    text-decoration: none;
+}
+
+.pagination .page-link:hover { background: var(--body-bg); }
+
+.pagination .active .page-link {
+    background: var(--brand-blue);
+    border-color: var(--brand-blue);
+    color: #ffffff;
+}
+
+.pagination .disabled .page-link {
+    color: var(--text-light);
+    pointer-events: none;
+}
